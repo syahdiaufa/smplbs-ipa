@@ -4244,7 +4244,7 @@ async function libaruAskAI(){
  const mod=typeof getModule==='function'?getModule(AppState.currentTopicId):null;
  const prompt = `Anda adalah asisten guru IPA SMP yang ramah. Jawablah langsung pertanyaan berikut secara jelas, padat, dan mudah dipahami siswa: "${q}"`;
  try{
-  const resp=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+encodeURIComponent(key),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.4,maxOutputTokens:1800}})});
+  const resp=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key='+encodeURIComponent(key), {
   const data=await resp.json();if(!resp.ok){const msg=data?.error?.message||('HTTP '+resp.status);if(resp.status===404)throw new Error('Model Gemini tidak ditemukan. Periksa nama model yang tersedia untuk API key ini di Google AI Studio. Detail: '+msg);if(resp.status===400)throw new Error('Permintaan ditolak oleh Gemini. Periksa API key, nama model, dan format pertanyaan. Detail: '+msg);if(resp.status===403)throw new Error('API key tidak memiliki izin atau belum mengaktifkan Gemini API. Detail: '+msg);if(resp.status===429)throw new Error('Kuota Gemini sedang habis atau batas permintaan tercapai. Coba lagi nanti. Detail: '+msg);throw new Error(msg);}
   out.textContent=data?.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('\n')||'AI tidak mengembalikan teks. Coba pertanyaan lain.';
  }catch(e){out.textContent='Pencarian AI gagal: '+e.message+'\nPeriksa koneksi internet, API key, kuota, dan akses model Gemini.';}
